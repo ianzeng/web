@@ -267,20 +267,13 @@ func (s *Server) routeHandler(req *http.Request, w ResponseWriter) {
     requestPath := req.URL.Path
     ctx := Context{req, map[string]string{}, s, w}
 
-    //log the request
-    var logEntry bytes.Buffer
-    fmt.Fprintf(&logEntry, "\033[32;1m%s %s\033[0m", req.Method, requestPath)
-
     //ignore errors from ParseForm because it's usually harmless.
     req.ParseForm()
     if len(req.Form) > 0 {
         for k, v := range req.Form {
             ctx.Params[k] = v[0]
         }
-        fmt.Fprintf(&logEntry, "\n\033[37;1mParams: %v\033[0m\n", ctx.Params)
     }
-
-    ctx.Server.Logger.Print(logEntry.String())
 
     //set some default headers
     ctx.SetHeader("Server", "web.go", true)
