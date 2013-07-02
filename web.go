@@ -409,6 +409,7 @@ func (s *Server) Run(addr string) {
     }
     s.l = l
     err = http.Serve(s.l, mux)
+    s.Logger.Println("web.go serving ", addr, " error, desc: ", err)
     s.l.Close()
 }
 
